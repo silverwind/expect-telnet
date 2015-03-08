@@ -29,14 +29,11 @@ module.exports = function (host, port, seq, cb) {
       seq[i].done = true;
 
       if (seq[i].out) {
-        //remove command and prompt from output
         var lines = [];
-        saved.split(/\r\n/g).forEach(function (line) {
+        saved.split(/\r\n/).forEach(function (line) {
           if (line) lines.push(line);
         });
-        if (lines.length >= 3) {
-          lines = lines.slice(1, lines.length - 1);
-        }
+        lines = lines.length >= 3 ? lines.slice(1, lines.length - 1) : lines;
         seq[i].out(lines.join("\n"));
       }
 
