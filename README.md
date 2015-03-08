@@ -9,7 +9,7 @@ $ npm install --save expect-telnet
 ```js
 var et = require("expect-telnet");
 
-// connect to target, log in, run `command` and exit after logging output of `command`.
+// connect, log in, run `command` and exit after logging output of `command`.
 et("1.2.3.4", 23, [
   {expect: "Username", send: "username\r"},
   {expect: "Password", send: "password\r"},
@@ -20,7 +20,7 @@ et("1.2.3.4", 23, [
   // sequence done
 });
 
-// connect to target, log in and start an interactive session.
+// connect, log in and start an interactive session.
 et("1.2.3.4", 23, [
   {expect: "Username", send: "username\r"},
   {expect: "Password", send: "password\r"},
@@ -41,6 +41,6 @@ et("1.2.3.4", 23, [
 - `expect` *string*   : String to expect.
 - `send`   *string*   : String to send when `expect` is found.
 - `out`  *function*   : Output function, receives the output since the previous step.
-- `interact` *boolean*: Enter interacive mode from stdin. There's currently no way out of interactive mode, so this should be last.
+- `interact` *boolean*: Enter interacive mode with stdin/stdout. There's currently no way out of this mode, so this should be last.
 
 © 2015 [silverwind](https://github.com/silverwind), distributed under BSD licence
