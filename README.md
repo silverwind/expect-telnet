@@ -9,12 +9,12 @@ $ npm install --save expect-telnet
 ```js
 var et = require("expect-telnet");
 
-// connect, log in, run `command` and exit after logging output of `command`.
+// connect, log in, run a command and exit after logging its output.
 et("1.2.3.4", 23, [
   {expect: "Username", send: "username\r"},
   {expect: "Password", send: "password\r"},
   {expect: "#"       , send: "command\r" },
-  {expect: "#"       , out: console.log, send: "exit\r"},
+  {expect: "#"       , out: console.log, send: "exit\r"}
 ], function (err) {
   console.log(err);
   // sequence done
@@ -35,7 +35,7 @@ et("1.2.3.4", 23, [
 ### expect-telnet(host, port, seq, cb)
 - `host` *string*: Target host.
 - `port` *number*: Target port.
-- `seq`  *array* : Array of expect steps (objects)
+- `seq`  *array* : Array of expect steps (objects).
 
 #### Expect step object
 - `expect` *string*   : String to expect.
