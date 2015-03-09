@@ -16,7 +16,7 @@ et("1.2.3.4", 23, [
   {expect: "#"       , send: "command\r" },
   {expect: "#"       , out: console.log, send: "exit\r"}
 ], function (err) {
-  console.log(err);
+  if (err) console.log(err);
   // sequence done
 });
 
