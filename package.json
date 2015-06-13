@@ -3,16 +3,9 @@
   "version": "0.1.1",
   "description": "telnet automation through expect-send sequences, like in Tcl",
   "author": "silverwind <me@silverwind.io> (https://github.com/silverwind)",
-  "license": "BSD-2-clause",
-  "bugs": {
-    "url": "https://github.com/silverwind/expect-telnet/issues"
-  },
-  "homepage": "https://github.com/silverwind/expect-telnet",
+  "license": "BSD-2-Clause",
   "main": "index.js",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/silverwind/expect-telnet"
-  },
+  "repository": "/silverwind/expect-telnet",
   "keywords": [
     "expect",
     "telnet",
@@ -25,8 +18,7 @@
   ],
   "devDependencies": {
     "grunt": "^0.4.5",
-    "grunt-bump": "0.3.0",
-    "grunt-contrib-jshint": "^0.11.0",
+    "grunt-bump": "0.3.1",
     "grunt-shell": "^1.1.2"
   }
 }
