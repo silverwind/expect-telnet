@@ -5,7 +5,7 @@
   "author": "silverwind <me@silverwind.io> (https://github.com/silverwind)",
   "license": "BSD-2-Clause",
   "main": "index.js",
-  "repository": "/silverwind/expect-telnet",
+  "repository": "silverwind/expect-telnet",
   "keywords": [
     "expect",
     "telnet",
