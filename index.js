@@ -1,14 +1,23 @@
 "use strict";
 var net = require("net");
 
-module.exports = function (host, port, seq, cb) {
+module.exports = function (dest, seq, opts, cb) {
   var socket = new net.Socket(), interacting, saved = "";
+  if (typeof opts === "function") cb = opts;
+  opts = opts || {};
 
-  socket.once("connect", socket.setNoDelay).connect(port, host);
+  socket.once("connect", socket.setNoDelay);
+  socket.connect.apply(socket, dest.split(":").reverse());
   socket.on("error", function (err) {
-    if (interacting) process.exit(0);
+    if (interacting) interacting = false;
     socket.removeAllListeners("data").removeAllListeners("error").end();
     cb(err);
+  });
+  socket.on("end", function () {
+    if (interacting) {
+      process.stdin.removeAllListeners("data");
+      if (opts.exit) process.exit(0);
+    }
   });
   socket.on("data", function next(chunk) {
     if (interacting) return process.stdout.write(chunk);
@@ -45,6 +54,7 @@ module.exports = function (host, port, seq, cb) {
         process.stdin.setRawMode(true);
         interacting = true;
         process.stdin.on("data", function (c) {
+          if (!socket.writable) return;
           if (c.toString("hex") === "7f") c = Buffer("08", "hex"); // Convert DEL to BKSP
           socket.write(c);
         });
