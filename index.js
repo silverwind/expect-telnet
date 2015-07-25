@@ -1,13 +1,17 @@
 "use strict";
 var net = require("net");
+var parse = require("url-parse-lax");
 
 module.exports = function (dest, seq, opts, cb) {
   var socket = new net.Socket(), interacting, saved = "";
   if (typeof opts === "function") cb = opts;
   opts = opts || {};
 
-  socket.once("connect", socket.setNoDelay);
-  socket.connect.apply(socket, dest.split(":").reverse());
+  socket.once("connect", socket.setNoDelay.bind(socket));
+
+  dest = parse(dest);
+  socket.connect(dest.port, dest.hostname);
+
   socket.on("error", function (err) {
     if (interacting) interacting = false;
     socket.removeAllListeners("data").removeAllListeners("error").end();
