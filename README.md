@@ -15,14 +15,18 @@ et("1.2.3.4:23", [
   {expect: "Password", send: "password\r"},
   {expect: "#"       , send: "command\r" },
   {expect: "#"       , out: console.log, send: "exit\r"}
-], console.error);
+], function(err) {
+  if (err) console.error(err);
+});
 
 // connect, log in and start an interactive session.
 et("1.2.3.4:23", [
   {expect: "Username", send: "username\r"},
   {expect: "Password", send: "password\r"},
   {expect: "#"       , interact: true    }
-], {exit: true}, console.error);
+], {exit: true}, function(err) {
+  if (err) console.error(err);
+}
 ```
 
 ## API
@@ -39,5 +43,6 @@ et("1.2.3.4:23", [
 - `interact` *boolean* : Enter interacive mode with stdin/stdout. There's currently no way out of this mode, so this should be last.
 
 #### Options
-- `exit` *boolean*: Wether to exit the process when interacting ends.
+- `timeout` *number: Connection timeout in milliseconds.
+- `exit` *boolean*: Whether to exit the process when interacting ends.
 © 2015 [silverwind](https://github.com/silverwind), distributed under BSD licence

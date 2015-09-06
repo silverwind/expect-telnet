@@ -7,7 +7,7 @@ module.exports = function (dest, seq, opts, cb) {
   if (typeof opts === "function") cb = opts;
   opts = opts || {};
 
-  socket.setTimeout(5000);
+  socket.setTimeout(opts.timeout || 3000);
   socket.once("connect", socket.setNoDelay.bind(socket));
 
   dest = parse(dest);
