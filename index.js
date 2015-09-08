@@ -1,13 +1,14 @@
 "use strict";
 var net = require("net");
 var parse = require("url-parse-lax");
+var TIMEOUT = 3000;
 
 module.exports = function (dest, seq, opts, cb) {
   var socket = new net.Socket(), interacting, saved = "";
   if (typeof opts === "function") cb = opts;
   opts = opts || {};
 
-  socket.setTimeout(opts.timeout || 3000);
+  socket.setTimeout(opts.timeout || TIMEOUT);
   socket.once("connect", socket.setNoDelay.bind(socket));
 
   dest = parse(dest);
