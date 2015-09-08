@@ -45,7 +45,7 @@ module.exports = function (dest, seq, opts, cb) {
 
       if (seq[i].out) {
         var lines = [];
-        saved.split(/\r\n/).forEach(function (line) {
+        saved.split(/\r?\n/).forEach(function (line) {
           if (line) lines.push(line);
         });
         lines = lines.length >= 3 ? lines.slice(1, lines.length - 1) : lines;
