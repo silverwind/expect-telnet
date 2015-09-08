@@ -14,7 +14,9 @@ et("1.2.3.4:23", [
   {expect: "Username", send: "username\r"},
   {expect: "Password", send: "password\r"},
   {expect: "#"       , send: "command\r" },
-  {expect: "#"       , out: process.stdout.write, send: "exit\r"}
+  {expect: "#"       , out: function(output) {
+    console.log(output);
+  }, send: "exit\r"}
 ], function(err) {
   if (err) console.error(err);
 });
@@ -29,7 +31,7 @@ et("1.2.3.4:23", [
   {expect: "#"       , interact: true    }
 ], {exit: true}, function(err) {
   if (err) console.error(err);
-}
+});
 ```
 
 ## API
