@@ -1,6 +1,6 @@
 {
   "name": "expect-telnet",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "telnet automation through expect-send sequences, like in Tcl",
   "author": "silverwind <me@silverwind.io> (https://github.com/silverwind)",
   "license": "BSD-2-Clause",
