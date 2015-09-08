@@ -38,14 +38,16 @@ module.exports = function (dest, seq, opts, cb) {
       return !entry.done;
     });
 
-    seq[i].timeout = setTimeout(function () {
-      endSocket(socket);
-      cb(new Error("Expect sequence timeout: " + seq[i].expect));
-    }, opts.timeout || TIMEOUT);
-
     if (!seq[i] || seq[i].done) {
       endSocket(socket);
       return cb();
+    }
+
+    if (!seq[i].timeout) {
+      seq[i].timeout = setTimeout(function () {
+        endSocket(socket);
+        cb(new Error("Expect sequence timeout: " + seq[i].expect));
+      }, opts.timeout || TIMEOUT);
     }
 
     saved += chunk;
