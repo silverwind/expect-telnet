@@ -1,7 +1,11 @@
 "use strict";
 var net = require("net");
 var parse = require("url-parse-lax");
-var TIMEOUT = 3000;
+var TIMEOUT = 5000;
+
+function endSocket(socket) {
+  socket.removeAllListeners("data").removeAllListeners("error").end();
+}
 
 module.exports = function (dest, seq, opts, cb) {
   var socket = new net.Socket(), interacting, saved = "";
@@ -16,7 +20,7 @@ module.exports = function (dest, seq, opts, cb) {
 
   socket.on("error", function (err) {
     if (interacting) interacting = false;
-    socket.removeAllListeners("data").removeAllListeners("error").end();
+    endSocket(socket);
     cb(err);
   });
   socket.on("end", function () {
@@ -34,13 +38,19 @@ module.exports = function (dest, seq, opts, cb) {
       return !entry.done;
     });
 
+    seq[i].timeout = setTimeout(function () {
+      endSocket(socket);
+      cb(new Error("Expect sequence timeout: " + seq[i].expect));
+    }, opts.timeout || TIMEOUT);
+
     if (!seq[i] || seq[i].done) {
-      socket.removeAllListeners("data").removeAllListeners("error").end();
+      endSocket(socket);
       return cb();
     }
 
     saved += chunk;
     if (saved.indexOf(seq[i].expect) !== -1) {
+      clearTimeout(seq[i].timeout);
       seq[i].done = true;
 
       if (seq[i].out) {
@@ -66,7 +76,6 @@ module.exports = function (dest, seq, opts, cb) {
         });
         socket.write("\r");
       }
-
       saved = "";
     }
   });
