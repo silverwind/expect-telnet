@@ -35,7 +35,7 @@ et("1.2.3.4:23", [
 ```
 
 ## API
-### expect-telnet(host, dest, seq, [opts], cb)
+### expect-telnet(dest, seq, [opts], cb)
 - `dest` *string*  : Target host and port separated by a colon.
 - `seq`  *array*   : Array of expect steps (objects).
 - `opts` *object*  : Options object.
