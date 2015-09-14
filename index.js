@@ -51,7 +51,18 @@ module.exports = function (dest, seq, opts, cb) {
     }
 
     saved += chunk;
-    if (saved.indexOf(seq[i].expect) !== -1) {
+
+    var matched;
+    if (seq[i].expect instanceof RegExp) {
+      matched = seq[i].expect.test(saved);
+    } else if (typeof seq[i].expect === "string") {
+      matched = saved.indexOf(seq[i].expect) !== -1;
+    } else {
+      endSocket(socket);
+      cb(new Error("Expected a String or RegExp:" + seq[i].expect));
+    }
+
+    if (matched) {
       clearTimeout(seq[i].timeout);
       seq[i].done = true;
 

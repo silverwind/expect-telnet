@@ -42,7 +42,7 @@ et("1.2.3.4:23", [
 - `cb`   *function*: Called when an error happens.
 
 #### Expect step object
-- `expect`   *string*  : String to expect.
+- `expect`   *string* / *regexp* : String or RegExp to expect.
 - `send`     *string*  : String to send when `expect` is found.
 - `out`      *function*: Output function, receives the output since the previous step.
 - `interact` *boolean* : Enter interacive mode with stdin/stdout. There's currently no way out of this mode, so this should be last.
