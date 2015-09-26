@@ -7,7 +7,7 @@ function endSocket(socket) {
   socket.removeAllListeners("data").removeAllListeners("error").end();
 }
 
-module.exports = function (dest, seq, opts, cb) {
+module.exports = function(dest, seq, opts, cb) {
   var socket = new net.Socket(), interacting, saved = "";
   if (typeof opts === "function") cb = opts;
   opts = opts || {};
@@ -18,12 +18,12 @@ module.exports = function (dest, seq, opts, cb) {
   dest = parse(dest);
   socket.connect(dest.port, dest.hostname);
 
-  socket.on("error", function (err) {
+  socket.on("error", function(err) {
     if (interacting) interacting = false;
     endSocket(socket);
     cb(err);
   });
-  socket.on("end", function () {
+  socket.on("end", function() {
     if (interacting) {
       process.stdin.removeAllListeners("data");
       if (opts.exit) process.exit(0);
@@ -33,7 +33,7 @@ module.exports = function (dest, seq, opts, cb) {
     if (interacting) return process.stdout.write(chunk);
 
     var i;
-    seq.some(function (entry, index) {
+    seq.some(function(entry, index) {
       i = entry.done ? undefined : index;
       return !entry.done;
     });
@@ -44,7 +44,7 @@ module.exports = function (dest, seq, opts, cb) {
     }
 
     if (!seq[i].timeout) {
-      seq[i].timeout = setTimeout(function () {
+      seq[i].timeout = setTimeout(function() {
         endSocket(socket);
         cb(new Error("Expect sequence timeout: " + seq[i].expect));
       }, opts.timeout || TIMEOUT);
@@ -68,7 +68,7 @@ module.exports = function (dest, seq, opts, cb) {
 
       if (seq[i].out) {
         var lines = [];
-        saved.split(/\r?\n/).forEach(function (line) {
+        saved.split(/\r?\n/).forEach(function(line) {
           if (line) lines.push(line);
         });
         lines = lines.length >= 3 ? lines.slice(1, lines.length - 1) : lines;
@@ -82,7 +82,7 @@ module.exports = function (dest, seq, opts, cb) {
       if (seq[i].interact) {
         process.stdin.setRawMode(true);
         interacting = true;
-        process.stdin.on("data", function (c) {
+        process.stdin.on("data", function(c) {
           if (!socket.writable) return;
           if (c.toString("hex") === "7f") c = Buffer("08", "hex"); // Convert DEL to BKSP
           socket.write(c);
