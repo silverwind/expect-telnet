@@ -51,4 +51,4 @@ et("1.2.3.4:23", [
 - `timeout` *number: Timeout for connection and expect sequences in milliseconds. Set to `infinity` for no timeout.
 - `exit`  *boolean*: Whether to exit the process when interacting ends.
 
-© 2015 [silverwind](https://github.com/silverwind), distributed under BSD licence
+© [silverwind](https://github.com/silverwind), distributed under BSD licence
