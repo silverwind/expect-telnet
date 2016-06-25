@@ -13,6 +13,7 @@ module.exports = function(dest, seq, opts, cb) {
   opts = opts || {};
 
   socket.setTimeout(opts.timeout || TIMEOUT);
+  socket.once("timeout", socket.destroy);
   socket.once("connect", socket.setNoDelay.bind(socket));
 
   dest = parse(dest);
