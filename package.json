@@ -15,8 +15,5 @@
   ],
   "files": [
     "index.js"
-  ],
-  "dependencies": {
-    "url-parse-lax": "^1.0.0"
-  }
+  ]
 }

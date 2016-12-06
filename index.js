@@ -1,6 +1,6 @@
 "use strict";
 var net = require("net");
-var parse = require("url-parse-lax");
+var url = require("url");
 var TIMEOUT = 5000;
 
 function endSocket(socket) {
@@ -16,7 +16,7 @@ module.exports = function(dest, seq, opts, cb) {
   socket.once("timeout", socket.destroy);
   socket.once("connect", socket.setNoDelay.bind(socket));
 
-  dest = parse(dest);
+  dest = url.parse("http://" + dest);
   socket.connect(dest.port, dest.hostname);
 
   socket.on("error", function(err) {
