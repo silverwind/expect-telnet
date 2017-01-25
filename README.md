@@ -1,4 +1,5 @@
-# expect-telnet [![NPM version](https://img.shields.io/npm/v/expect-telnet.svg?style=flat)](https://www.npmjs.org/package/expect-telnet) [![Dependency Status](http://img.shields.io/david/silverwind/expect-telnet.svg?style=flat)](https://david-dm.org/silverwind/expect-telnet)
+# expect-telnet
+[![](https://img.shields.io/npm/v/expect-telnet.svg?style=flat)](https://www.npmjs.org/package/expect-telnet) [![](https://img.shields.io/npm/dm/expect-telnet.svg)](https://www.npmjs.org/package/expect-telnet) [![](https://api.travis-ci.org/silverwind/expect-telnet.svg?style=flat)](https://travis-ci.org/silverwind/expect-telnet)
 > telnet automation through expect-send sequences, like in Tcl.
 
 ## Installation
