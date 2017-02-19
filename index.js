@@ -4,7 +4,12 @@ var url = require("url");
 var TIMEOUT = 5000;
 
 function endSocket(socket) {
-  socket.removeAllListeners("data").removeAllListeners("error").end();
+  socket.removeAllListeners("data").removeAllListeners("error");
+  socket.destroy();
+}
+
+function formatHostPort(uri) {
+  return url.format(uri).replace(/^.+\/\//, "").replace(/\/$/, "");
 }
 
 module.exports = function(dest, seq, opts, cb) {
@@ -12,18 +17,25 @@ module.exports = function(dest, seq, opts, cb) {
   if (typeof opts === "function") cb = opts;
   opts = opts || {};
 
-  socket.setTimeout(opts.timeout || TIMEOUT);
-  socket.once("timeout", socket.destroy);
-  socket.once("connect", socket.setNoDelay.bind(socket));
-
   dest = url.parse("http://" + dest);
-  socket.connect(dest.port, dest.hostname);
 
-  socket.on("error", function(err) {
+  socket.setTimeout(opts.timeout || TIMEOUT);
+
+  socket.once("timeout", function() {
+    endSocket(socket);
+    cb(new Error("Timeout connecting to " + formatHostPort(dest)));
+  });
+
+  socket.once("error", function(err) {
     if (interacting) interacting = false;
     endSocket(socket);
     cb(err);
   });
+
+  socket.once("connect", socket.setNoDelay.bind(socket));
+
+  socket.connect(dest.port, dest.hostname);
+
   socket.on("end", function() {
     if (interacting) {
       process.stdin.removeAllListeners("data");
