@@ -6,6 +6,9 @@
   "license": "BSD-2-Clause",
   "main": "index.js",
   "repository": "silverwind/expect-telnet",
+  "scripts": {
+    "test": "make test"
+  },
   "keywords": [
     "expect",
     "telnet",
@@ -15,5 +18,9 @@
   ],
   "files": [
     "index.js"
-  ]
+  ],
+  "devDependencies": {
+    "eslint": "^4.12.1",
+    "updates": "^1.2.6"
+  }
 }

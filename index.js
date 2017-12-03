@@ -1,7 +1,7 @@
 "use strict";
-var net = require("net");
-var url = require("url");
-var TIMEOUT = 5000;
+const net = require("net");
+const url = require("url");
+const TIMEOUT = 5000;
 
 function endSocket(socket) {
   socket.removeAllListeners("data").removeAllListeners("error");
@@ -13,7 +13,8 @@ function formatHostPort(uri) {
 }
 
 module.exports = function(dest, seq, opts, cb) {
-  var socket = new net.Socket(), interacting, saved = "";
+  const socket = new net.Socket();
+  let interacting, saved = "";
   if (typeof opts === "function") cb = opts;
   opts = opts || {};
 
@@ -45,7 +46,7 @@ module.exports = function(dest, seq, opts, cb) {
   socket.on("data", function next(chunk) {
     if (interacting) return process.stdout.write(chunk);
 
-    var i;
+    let i;
     seq.some(function(entry, index) {
       i = entry.done ? undefined : index;
       return !entry.done;
@@ -65,7 +66,7 @@ module.exports = function(dest, seq, opts, cb) {
 
     saved += chunk;
 
-    var matched;
+    let matched;
     if (seq[i].expect instanceof RegExp) {
       matched = seq[i].expect.test(saved);
     } else if (typeof seq[i].expect === "string") {
@@ -80,7 +81,7 @@ module.exports = function(dest, seq, opts, cb) {
       seq[i].done = true;
 
       if (seq[i].out) {
-        var lines = [];
+        let lines = [];
         saved.split(/\r?\n/).forEach(function(line) {
           if (line) lines.push(line);
         });
