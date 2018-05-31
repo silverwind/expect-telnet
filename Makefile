@@ -1,17 +1,17 @@
-lint:
-	node_modules/.bin/eslint --color --quiet *.js
+BIN:=node_modules/.bin
 
 test:
-	$(MAKE) lint
+	$(BIN)/eslint *.js
 
 publish:
-	git push -u --tags origin master
+	if git ls-remote --exit-code origin &>/dev/null; then git push -u -f --tags origin master; fi
+	if git ls-remote --exit-code git &>/dev/null; then git push -u -f --tags git master; fi
 	npm publish
 
 update:
-	node_modules/.bin/updates -u
+	$(BIN)/updates -u
 	rm -rf node_modules
-	yarn
+	yarn --no-lockfile
 
 npm-patch:
 	npm version patch
@@ -22,8 +22,8 @@ npm-minor:
 npm-major:
 	npm version major
 
-patch: lint npm-patch publish
-minor: lint npm-minor publish
-major: lint npm-major publish
+patch: lint test npm-patch publish
+minor: lint test npm-minor publish
+major: lint test npm-major publish
 
-.PHONY: lint publish update npm-patch npm-minor npm-major patch minor major
+.PHONY: lint test publish update npm-patch npm-minor npm-major patch minor major

@@ -22,12 +22,12 @@ module.exports = function(dest, seq, opts, cb) {
 
   socket.setTimeout(opts.timeout || TIMEOUT);
 
-  socket.once("timeout", function() {
+  socket.once("timeout", () => {
     endSocket(socket);
     cb(new Error("Timeout connecting to " + formatHostPort(dest)));
   });
 
-  socket.once("error", function(err) {
+  socket.once("error", err => {
     if (interacting) interacting = false;
     endSocket(socket);
     cb(err);
@@ -37,17 +37,17 @@ module.exports = function(dest, seq, opts, cb) {
 
   socket.connect(dest.port, dest.hostname);
 
-  socket.on("end", function() {
+  socket.on("end", () => {
     if (interacting) {
       process.stdin.removeAllListeners("data");
       if (opts.exit) process.exit(0);
     }
   });
-  socket.on("data", function next(chunk) {
+  socket.on("data", chunk => {
     if (interacting) return process.stdout.write(chunk);
 
     let i;
-    seq.some(function(entry, index) {
+    seq.some((entry, index) => {
       i = entry.done ? undefined : index;
       return !entry.done;
     });
@@ -58,7 +58,7 @@ module.exports = function(dest, seq, opts, cb) {
     }
 
     if (!seq[i].timeout) {
-      seq[i].timeout = setTimeout(function() {
+      seq[i].timeout = setTimeout(() => {
         endSocket(socket);
         cb(new Error("Expect sequence timeout: " + seq[i].expect));
       }, opts.timeout || TIMEOUT);
@@ -82,7 +82,7 @@ module.exports = function(dest, seq, opts, cb) {
 
       if (seq[i].out) {
         let lines = [];
-        saved.split(/\r?\n/).forEach(function(line) {
+        saved.split(/\r?\n/).forEach(line => {
           if (line) lines.push(line);
         });
         lines = lines.length >= 3 ? lines.slice(1, lines.length - 1) : lines;
@@ -96,10 +96,10 @@ module.exports = function(dest, seq, opts, cb) {
       if (seq[i].interact) {
         process.stdin.setRawMode(true);
         interacting = true;
-        process.stdin.on("data", function(c) {
+        process.stdin.on("data", char => {
           if (!socket.writable) return;
-          if (c.toString("hex") === "7f") c = Buffer("08", "hex"); // Convert DEL to BKSP
-          socket.write(c);
+          if (char.toString("hex") === "7f") char = Buffer("08", "hex"); // Convert DEL to BKSP
+          socket.write(char);
         });
         socket.write("\r");
       }
